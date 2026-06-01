@@ -1,0 +1,537 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>TaskManager — планування завдань</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Literata:ital,opsz,wght@0,7..72,400;0,7..72,700;1,7..72,400&family=Source+Sans+3:wght@400;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+<div class="overlay" id="overlay"></div>
+
+<div class="toast" id="toast">
+  <span class="toast__icon" id="toastIcon">✅</span>
+  <span class="toast__text" id="toastText">Успіх!</span>
+</div>
+
+<header class="header" id="header">
+  <div class="container">
+    <div class="header__wrapper">
+
+      <a href="#" class="logo">Task<span>Manager</span></a>
+
+      <nav class="nav">
+        <ul class="nav__list">
+          <li><a href="#features" class="nav__link">Функції</a></li>
+          <li><a href="#how" class="nav__link">Як це працює</a></li>
+          <li><a href="#pricing" class="nav__link">Тарифи</a></li>
+          <li><a href="#faq" class="nav__link">FAQ</a></li>
+        </ul>
+      </nav>
+
+      <div class="header__actions">
+        <div class="auth-buttons" id="authButtons">
+          <button class="btn btn--secondary btn--sm" onclick="openAuthModal('login')">Увійти</button>
+          <button class="btn btn--primary btn--sm" onclick="openAuthModal('register')">Реєстрація</button>
+        </div>
+
+        <div class="user-avatar" id="userAvatar" onclick="logoutUser()">
+          <div class="user-avatar__pic" id="userPic">TM</div>
+          <span class="user-avatar__name" id="userName">Користувач</span>
+          <span class="user-avatar__logout">↩</span>
+        </div>
+
+        <button class="burger" id="burger" aria-label="Меню">
+          <span></span><span></span><span></span>
+        </button>
+      </div>
+
+    </div>
+  </div>
+</header>
+
+<div class="mobile-menu" id="mobileMenu">
+  <ul class="mobile-menu__list">
+    <li><a href="#features" class="mobile-menu__link" onclick="closeMobileMenu()">Функції</a></li>
+    <li><a href="#how" class="mobile-menu__link" onclick="closeMobileMenu()">Як це працює</a></li>
+    <li><a href="#pricing" class="mobile-menu__link" onclick="closeMobileMenu()">Тарифи</a></li>
+    <li><a href="#faq" class="mobile-menu__link" onclick="closeMobileMenu()">FAQ</a></li>
+  </ul>
+  <div class="mobile-menu__actions" id="mobileMenuActions">
+    <button class="btn btn--secondary" onclick="closeMobileMenu(); openAuthModal('login')">Увійти</button>
+    <button class="btn btn--primary" onclick="closeMobileMenu(); openAuthModal('register')">Реєстрація</button>
+  </div>
+</div>
+
+<section class="hero">
+  <div class="container">
+    <div class="hero__wrapper">
+
+      <div class="hero__content animate">
+        <div class="hero__badge">Без зайвого шуму</div>
+        <h1 class="hero__title">
+          Завдання на столі,<br>
+          <span>не в голові</span>
+        </h1>
+        <p class="hero__text">
+          Простий планер для команди чи себе: дошка, дедлайни, тарифи — без корпоративної води й неонових градієнтів.
+        </p>
+        <div class="hero__buttons">
+          <button class="btn btn--primary" onclick="openAuthModal('register')">Почати безкоштовно</button>
+          <a href="#how" class="btn btn--secondary">Як це працює</a>
+        </div>
+        <div class="hero__stats">
+          <div class="hero__stat">
+            <div class="hero__stat-number">12к+</div>
+            <div class="hero__stat-text">Активних команд</div>
+          </div>
+          <div class="hero__stat">
+            <div class="hero__stat-number">98%</div>
+            <div class="hero__stat-text">Задоволених клієнтів</div>
+          </div>
+          <div class="hero__stat">
+            <div class="hero__stat-number">4.9★</div>
+            <div class="hero__stat-text">Рейтинг</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="hero__visual animate">
+        <div class="board__header">
+          <span class="board__title">Мій проєкт</span>
+          <div class="board__dots">
+            <div class="board__dot board__dot--red"></div>
+            <div class="board__dot board__dot--yellow"></div>
+            <div class="board__dot board__dot--green"></div>
+          </div>
+        </div>
+        <div class="board__columns">
+          <div>
+            <div class="board__col-title">До виконання</div>
+            <div class="task-card">
+              <span class="task-card__label label--blue">Дизайн</span>
+              <div class="task-card__text">Оновити UI головної сторінки</div>
+              <div class="task-card__meta">
+                <span class="task-card__due">📅 Завтра</span>
+                <div class="task-card__avatar">АК</div>
+              </div>
+            </div>
+            <div class="task-card">
+              <span class="task-card__label label--orange">Маркетинг</span>
+              <div class="task-card__text">Написати пост для соцмереж</div>
+              <div class="task-card__meta">
+                <span class="task-card__due">📅 П'ятниця</span>
+                <div class="task-card__avatar">МР</div>
+              </div>
+            </div>
+          </div>
+          <div>
+            <div class="board__col-title">В процесі</div>
+            <div class="task-card">
+              <span class="task-card__label label--blue">Розробка</span>
+              <div class="task-card__text">Інтегрувати API платіжної системи</div>
+              <div class="task-card__meta">
+                <span class="task-card__due">📅 Сьогодні</span>
+                <div class="task-card__avatar">ВС</div>
+              </div>
+            </div>
+          </div>
+          <div>
+            <div class="board__col-title">Готово</div>
+            <div class="task-card">
+              <span class="task-card__label label--green">Тести</span>
+              <div class="task-card__text">Unit тести для авторизації</div>
+              <div class="task-card__meta">
+                <span class="task-card__due">✓ Виконано</span>
+                <div class="task-card__avatar">ОП</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<section class="section" id="features">
+  <div class="container">
+    <div class="section__header animate">
+      <span class="section__subtitle">Можливості</span>
+      <h2 class="section__title">Все що потрібно для роботи</h2>
+      <p class="section__text">Інструменти, які дійсно прискорюють роботу та допомагають команді бути в синхроні.</p>
+    </div>
+    <div class="features__grid">
+      <div class="feature-card animate">
+        <div class="feature-card__icon">
+          <img src="https://upload.wikimedia.org/wikipedia/commons/d/d3/Simple-kanban-board-.jpg" alt="Kanban-дошки" />
+        </div>
+        <h3 class="feature-card__title">Kanban-дошки</h3>
+        <p class="feature-card__text">Перетягуй картки між колонками, налаштовуй статуси та відстежуй прогрес кожного завдання в реальному часі.</p>
+      </div>
+      <div class="feature-card animate">
+        <div class="feature-card__icon">
+          <img src="https://cdn.aib.edu.au/public-website/uploads/p/2019/03/form-submission-7464-teamworkisimportantintheworkplace-desktop-768x432-1606698141-85.jpg" alt="Командна робота" />
+        </div>
+        <h3 class="feature-card__title">Командна робота</h3>
+        <p class="feature-card__text">Запрошуй учасників, призначай відповідальних, залишай коментарі та обговорюй задачі прямо в картці.</p>
+      </div>
+      <div class="feature-card animate">
+        <div class="feature-card__icon">
+          <!-- Тут посилання на фото -->
+          <img src="https://web-promo.ua/wp-content/uploads/2023/11/modern-analyst-1317115_1280-1024x682.jpg" alt="Аналітика та звіти" />
+        </div>
+        <h3 class="feature-card__title">Аналітика та звіти</h3>
+        <p class="feature-card__text">Детальна статистика продуктивності, графіки виконання та звіти по проектах для прийняття рішень.</p>
+      </div>
+      <div class="feature-card animate">
+        <div class="feature-card__icon">
+          <!-- Тут посилання на фото -->
+          <img src="https://img.moyo.ua/img/news_desc/1677/167726_1695902224_2.jpg" alt="Сповіщення" />
+        </div>
+        <h3 class="feature-card__title">Сповіщення</h3>
+        <p class="feature-card__text">Отримуй нагадування про дедлайни, зміни статусів та коментарі прямо в браузері або на пошту.</p>
+      </div>
+      <div class="feature-card animate">
+        <div class="feature-card__icon">
+          <!-- Тут посилання на фото -->
+          <img src="https://metod.gi.edu.ua/media/k2/items/cache/71f67488b0857639cee631943a3fc6fa_L.jpg" alt="Інтеграції" />
+        </div>
+        <h3 class="feature-card__title">Інтеграції</h3>
+        <p class="feature-card__text">Підключай Slack, Google Drive, GitHub, Jira та десятки інших сервісів для безперервного робочого процесу.</p>
+      </div>
+      <div class="feature-card animate">
+        <div class="feature-card__icon">
+          <!-- Тут посилання на фото -->
+          <img src="https://optima-service.ua/wp-content/uploads/7-min-1.jpg" alt="Безпека даних" />
+        </div>
+        <h3 class="feature-card__title">Безпека даних</h3>
+        <p class="feature-card__text">Шифрування AES-256, двофакторна автентифікація та гнучкі права доступу для захисту корпоративних даних.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section section--alt" id="how">
+  <div class="container">
+    <div class="section__header animate">
+      <span class="section__subtitle">Як це працює</span>
+      <h2 class="section__title">Почни за 4 простих кроки</h2>
+      <p class="section__text">Налаштуй TaskManager за кілька хвилин і одразу збільш продуктивність команди.</p>
+    </div>
+    <div class="steps__grid">
+      <div class="step-card animate">
+        <div class="step-card__num">1</div>
+        <h3 class="step-card__title">Реєстрація</h3>
+        <p class="step-card__text">Створи акаунт безкоштовно. Жодних кредитних карток для початку.</p>
+      </div>
+      <div class="step-card animate">
+        <div class="step-card__num">2</div>
+        <h3 class="step-card__title">Створи проект</h3>
+        <p class="step-card__text">Додай новий проект, налаштуй колонки та запроси команду.</p>
+      </div>
+      <div class="step-card animate">
+        <div class="step-card__num">3</div>
+        <h3 class="step-card__title">Додавай задачі</h3>
+        <p class="step-card__text">Створюй картки, встановлюй дедлайни та призначай відповідальних.</p>
+      </div>
+      <div class="step-card animate">
+        <div class="step-card__num">4</div>
+        <h3 class="step-card__title">Відстежуй прогрес</h3>
+        <p class="step-card__text">Слідкуй за виконанням та аналізуй ефективність у реальному часі.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section" id="pricing">
+  <div class="container">
+    <div class="section__header animate">
+      <span class="section__subtitle">Тарифи</span>
+      <h2 class="section__title">Обери свій план</h2>
+      <p class="section__text">Починай безкоштовно та масштабуйся разом з командою без прихованих платежів.</p>
+    </div>
+    <div class="pricing__grid">
+
+      <div class="pricing-card animate">
+        <div class="pricing-card__name">Free</div>
+        <div class="pricing-card__price">$0 <span>/ місяць</span></div>
+        <p class="pricing-card__desc">Ідеально для особистого використання та маленьких команд.</p>
+        <ul class="pricing-card__list">
+          <li class="pricing-card__item">
+            <div class="pricing-card__item-icon">✓</div> До 3 проектів
+          </li>
+          <li class="pricing-card__item">
+            <div class="pricing-card__item-icon">✓</div> До 5 учасників
+          </li>
+          <li class="pricing-card__item">
+            <div class="pricing-card__item-icon">✓</div> Базові Kanban-дошки
+          </li>
+          <li class="pricing-card__item">
+            <div class="pricing-card__item-icon no">✗</div>
+            <span class="pricing-card__item-disabled">Аналітика та звіти</span>
+          </li>
+          <li class="pricing-card__item">
+            <div class="pricing-card__item-icon no">✗</div>
+            <span class="pricing-card__item-disabled">Пріоритетна підтримка</span>
+          </li>
+        </ul>
+        <button class="btn btn--secondary" onclick="openAuthModal('register')">Почати безкоштовно</button>
+      </div>
+
+        <div class="pricing-card pricing-card--featured animate">
+        <div class="pricing-card__badge">Найчастіше обирають</div>
+        <div class="pricing-card__name">Pro</div>
+        <div class="pricing-card__price">$12 <span>/ місяць</span></div>
+        <p class="pricing-card__desc">Для продуктивних команд, яким потрібно більше інструментів.</p>
+        <ul class="pricing-card__list">
+          <li class="pricing-card__item">
+            <div class="pricing-card__item-icon">✓</div> Необмежені проекти
+          </li>
+          <li class="pricing-card__item">
+            <div class="pricing-card__item-icon">✓</div> До 25 учасників
+          </li>
+          <li class="pricing-card__item">
+            <div class="pricing-card__item-icon">✓</div> Повна аналітика
+          </li>
+          <li class="pricing-card__item">
+            <div class="pricing-card__item-icon">✓</div> Інтеграції (Slack, GitHub)
+          </li>
+          <li class="pricing-card__item">
+            <div class="pricing-card__item-icon">✓</div> Пріоритетна підтримка
+          </li>
+        </ul>
+        <button class="btn btn--primary" onclick="handleSubscribe('Pro', '$12/міс')">Оформити підписку</button>
+      </div>
+
+      <div class="pricing-card animate">
+        <div class="pricing-card__name">Business</div>
+        <div class="pricing-card__price">$39 <span>/ місяць</span></div>
+        <p class="pricing-card__desc">Для великих компаній з розширеними потребами у безпеці.</p>
+        <ul class="pricing-card__list">
+          <li class="pricing-card__item">
+            <div class="pricing-card__item-icon">✓</div> Все з Pro плану
+          </li>
+          <li class="pricing-card__item">
+            <div class="pricing-card__item-icon">✓</div> Необмежені учасники
+          </li>
+          <li class="pricing-card__item">
+            <div class="pricing-card__item-icon">✓</div> SSO та 2FA
+          </li>
+          <li class="pricing-card__item">
+            <div class="pricing-card__item-icon">✓</div> SLA гарантії 99.9%
+          </li>
+          <li class="pricing-card__item">
+            <div class="pricing-card__item-icon">✓</div> Виділений менеджер
+          </li>
+        </ul>
+        <button class="btn btn--secondary" onclick="handleSubscribe('Business', '$39/міс')">Оформити підписку</button>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<section class="section section--alt" id="faq">
+  <div class="container">
+    <div class="section__header animate">
+      <span class="section__subtitle">FAQ</span>
+      <h2 class="section__title">Часті запитання</h2>
+    </div>
+    <div class="faq__list">
+      <div class="faq__item animate">
+        <button class="faq__question" onclick="toggleFaq(this)">
+          Чи є безкоштовний пробний період для платних планів?
+          <span class="faq__icon">+</span>
+        </button>
+        <div class="faq__answer">
+          <p>Так! Всі платні плани мають 14-денний безкоштовний пробний період без необхідності вводити дані картки. Ти можеш скасувати підписку в будь-який момент протягом цього часу.</p>
+        </div>
+      </div>
+      <div class="faq__item animate">
+        <button class="faq__question" onclick="toggleFaq(this)">
+          Скільки учасників можна запросити в команду?
+          <span class="faq__icon">+</span>
+        </button>
+        <div class="faq__answer">
+          <p>На Free плані — до 5 учасників. На Pro — до 25. На Business — необмежена кількість. Кожен учасник матиме власний акаунт та налаштовані права доступу.</p>
+        </div>
+      </div>
+      <div class="faq__item animate">
+        <button class="faq__question" onclick="toggleFaq(this)">
+          Чи можна змінити тариф у будь-який час?
+          <span class="faq__icon">+</span>
+        </button>
+        <div class="faq__answer">
+          <p>Так, план можна підвищити або знизити в будь-який момент. При підвищенні зараховується пропорційна вартість. При зниженні — зміна набуде чинності з наступного платіжного циклу.</p>
+        </div>
+      </div>
+      <div class="faq__item animate">
+        <button class="faq__question" onclick="toggleFaq(this)">
+          Які способи оплати підтримуються?
+          <span class="faq__icon">+</span>
+        </button>
+        <div class="faq__answer">
+          <p>Ми приймаємо всі основні кредитні та дебетові картки (Visa, Mastercard, Amex), а також PayPal. Для Business плану доступна оплата за рахунком-фактурою.</p>
+        </div>
+      </div>
+      <div class="faq__item animate">
+        <button class="faq__question" onclick="toggleFaq(this)">
+          Чи зберігаються дані після скасування підписки?
+          <span class="faq__icon">+</span>
+        </button>
+        <div class="faq__answer">
+          <p>Після скасування підписки дані зберігаються протягом 30 днів. За цей час можна експортувати всі проекти та задачі. Після 30 днів акаунт переходить на Free план з обмеженнями.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section">
+  <div class="container">
+    <div class="cta__wrapper animate">
+      <h2 class="cta__title">Готовий підвищити продуктивність?</h2>
+      <p class="cta__text">Створи акаунт за хвилину — решта вже на дошці.</p>
+      <div class="cta__buttons">
+        <button class="btn btn--primary" onclick="openAuthModal('register')">Почати безкоштовно</button>
+        <a href="#pricing" class="btn btn--secondary">Переглянути тарифи</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer class="footer">
+  <div class="container">
+    <div class="footer__wrapper">
+      <a href="#" class="logo">Task<span>Manager</span></a>
+      <nav class="footer__nav">
+        <a href="#features" class="footer__link">Функції</a>
+        <a href="#pricing" class="footer__link">Тарифи</a>
+        <a href="#faq" class="footer__link">FAQ</a>
+        <a href="#" class="footer__link">Політика</a>
+      </nav>
+      <p class="footer__copy">© 2026 TaskManager. Всі права захищені.</p>
+    </div>
+  </div>
+</footer>
+
+<button class="go-top" id="goTop" onclick="window.scrollTo({top:0,behavior:'smooth'})">↑</button>
+
+<div class="modal" id="authModal">
+  <div class="modal__content">
+    <button class="modal__close" onclick="closeModal('authModal')">✕</button>
+
+    <h2 class="modal__title" id="authTitle">Вітаємо!</h2>
+    <p class="modal__subtitle" id="authSubtitle">Увійди або створи новий акаунт</p>
+
+    <div class="auth-tabs">
+      <button class="auth-tab" id="tabLogin" onclick="switchTab('login')">Увійти</button>
+      <button class="auth-tab" id="tabRegister" onclick="switchTab('register')">Реєстрація</button>
+    </div>
+
+    <div class="auth-form" id="loginForm">
+      <div class="form__group">
+        <label class="form__label">Email</label>
+        <input type="text" class="form__input" id="loginEmail" placeholder="your@email.com" />
+        <span class="form__error" id="loginEmailErr">Введіть коректний email</span>
+      </div>
+      <div class="form__group">
+        <label class="form__label">Пароль</label>
+        <input type="password" class="form__input" id="loginPassword" placeholder="Ваш пароль" />
+        <span class="form__error" id="loginPassErr">Введіть пароль</span>
+      </div>
+      <button class="btn btn--primary modal__submit" onclick="handleLogin()">Увійти</button>
+    </div>
+
+    <div class="auth-form" id="registerForm">
+      <div class="form__group">
+        <label class="form__label">Ім'я</label>
+        <input type="text" class="form__input" id="regName" placeholder="Ваше ім'я" />
+        <span class="form__error" id="regNameErr">Мінімум 2 символи</span>
+      </div>
+      <div class="form__group">
+        <label class="form__label">Email</label>
+        <input type="text" class="form__input" id="regEmail" placeholder="your@email.com" />
+        <span class="form__error" id="regEmailErr">Введіть коректний email (містить @ та крапку)</span>
+      </div>
+      <div class="form__group">
+        <label class="form__label">Пароль</label>
+        <input type="password" class="form__input" id="regPassword" placeholder="Мінімум 6 символів" />
+        <span class="form__error" id="regPassErr">Пароль повинен містити мінімум 6 символів</span>
+      </div>
+      <div class="form__group">
+        <label class="form__label">Підтвердження пароля</label>
+        <input type="password" class="form__input" id="regConfirm" placeholder="Повторіть пароль" />
+        <span class="form__error" id="regConfirmErr">Паролі не співпадають</span>
+      </div>
+      <button class="btn btn--primary modal__submit" onclick="handleRegister()">Зареєструватись</button>
+    </div>
+
+  </div>
+</div>
+
+<div class="modal" id="paymentModal">
+  <div class="modal__content modal__content--wide">
+    <button class="modal__close" onclick="closeModal('paymentModal')">✕</button>
+
+    <h2 class="modal__title">Оформлення підписки</h2>
+    <p class="modal__subtitle">Безпечна оплата. Скасуй в будь-який час.</p>
+
+    <div class="payment__plan">
+      <div>
+        <div class="payment__plan-name" id="payPlanName">Pro план</div>
+        <div class="payment__plan-period">Щомісячна оплата</div>
+      </div>
+      <div class="payment__plan-price" id="payPlanPrice">$12/міс</div>
+    </div>
+<!-- . -->
+    <div class="form__group">
+      <label class="form__label">Ім'я власника картки</label>
+      <input type="text" class="form__input form__input--uppercase" id="payName" placeholder="IVAN KOVALENKO" />
+      <span class="form__error" id="payNameErr">Введіть ім'я власника</span>
+    </div>
+
+    <div class="form__group">
+      <div class="payment__icons">
+        <span class="card-icon">VISA</span>
+        <span class="card-icon">MC</span>
+        <span class="card-icon">AMEX</span>
+      </div>
+      <label class="form__label">Номер картки</label>
+      <input type="text" class="form__input" id="payCard" placeholder="0000 0000 0000 0000" maxlength="19" oninput="formatCard(this)" />
+      <span class="form__error" id="payCardErr">Введіть коректний номер картки (16 цифр)</span>
+    </div>
+
+    <div class="payment__card-row">
+      <div class="form__group">
+        <label class="form__label">Термін дії</label>
+        <input type="text" class="form__input" id="payExpiry" placeholder="MM/YY" maxlength="5" oninput="formatExpiry(this)" />
+        <span class="form__error" id="payExpiryErr">Введіть коректний термін</span>
+      </div>
+      <div class="form__group">
+        <label class="form__label">CVV</label>
+        <input type="text" class="form__input" id="payCvv" placeholder="123" maxlength="3" oninput="this.value=this.value.replace(/\D/g,'')" />
+        <span class="form__error" id="payCvvErr">Введіть CVV (3 цифри)</span>
+      </div>
+    </div>
+
+    <div class="payment__divider"></div>
+
+    <button class="btn btn--primary modal__submit" onclick="handlePayment()">Підтвердити оплату</button>
+
+    <div class="payment__secure">
+      Демо-оплата. Дані картки ніде не зберігаються.
+    </div>
+
+  </div>
+</div>
+
+
+<script src="script.js"></script>
+
+</body>
+</html>
